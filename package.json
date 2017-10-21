@@ -1,0 +1,27 @@
+{
+  "name": "fly-pagination",
+  "version": "1.0.0",
+  "description": "jquery 分页器插件",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "npm test "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/TongDaDa/fly-Pagination.git"
+  },
+  "keywords": [
+    "分页",
+    "分页器",
+    "jquery分页器"
+  ],
+  "author": "a flying pig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TongDaDa/fly-Pagination/issues"
+  },
+  "homepage": "https://github.com/TongDaDa/fly-Pagination#readme"
+}
