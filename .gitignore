@@ -6,4 +6,6 @@ node_modules
 ./index.js
 ./lib/index.js
 .vscode
-
+jquery.js
+jquery.min.js
+./index.html

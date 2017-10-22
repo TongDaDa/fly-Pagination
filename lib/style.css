@@ -1,6 +1,7 @@
 .pagination{
     padding:8px 0;
     text-align: right;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 }
 
 .pagination-list{
@@ -22,7 +23,8 @@
     background: #fff;
     border: 1px solid #ddd;
 }
-.pagination-list-item.superNext{ position: relative };
+
+.pagination-list-item.superNext{ position: relative }
 
 .pagination-list-item.superNext::after,
 .pagination-list-item.superTop::after {
