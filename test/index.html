@@ -5,34 +5,34 @@
     <link rel="stylesheet" href="">
     <meta charset="utf-8"/>
     <title> fly-pagination.js </title>
-
-    <link rel="stylesheet" href="./lib/style.css" />
-    
+    <link rel="stylesheet" href="../lib/style.css" />
 </head>
-
     <body>
-
         <div class="pagination">
-            <div class="pagination-list">
-                        
+            <div class="fly-page-list">   
             </div>
         </div>
-       
-
-        <script src="./lib/jquery.min.js"></script>
-        <script src="./lib/pagination.js"></script>
+        <script src="../lib/jquery.min.js"></script>
+        <script src="../lib/pagination.js"></script>
         <script>
-            new Pagination({
+
+            //初始化
+            const update = new Pagination({
                 total:1098,
                 pageNum:1,
-                pageSize:NaN,
-                skipPageNum:10,
                 onChange:(pageNum,pageSize)=>{
                     console.log(pageNum);
                     console.log(pageSize);
                 }
             });
+
+            //更新
+            update({
+                total:21,
+                pageNum:1,
+                pageSize:10,
+            });
+
         </script>
     </body>
-
 </html>

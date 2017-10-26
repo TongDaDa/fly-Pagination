@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/TongDaDa/fly-Pagination/issues"
   },
-  "homepage": "https://github.com/TongDaDa/fly-Pagination#readme"
+  "homepage": "https://github.com/TongDaDa/fly-Pagination#readme",
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  }
 }
