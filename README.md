@@ -69,7 +69,7 @@ update({
 注意：**每次`update`，只会对填入的选项(Options)进行替换操作，因此，之前的参数并不会消失。**
 
 
-##Options
+## options
 
 containerElement
 说明:页码容器，默认插入到

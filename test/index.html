@@ -16,40 +16,35 @@
 
         </div>
 
-        <button id="btn">
+        <button id="btn"> 测试 </button>
 
-        </button>
-
-        <script src="../lib/jquery.min.js"></script>
-        <script src="../lib/pagination.js"></script>
+        <script src="../src/pagination.js"></script>
         <script>
 
-            var num = 10;
+            var num = 0;
 
             //初始化
             const update = new Pagination({
-                containerElement:$(".container"),
+                containerElement:document.querySelector('.container'),
                 total:1098,
-                pageNum:1,
+                pageNum:100,
                 onChange:(pageNum,pageSize)=>{
                     console.log(pageNum);
                     console.log(pageSize);
-
                     num++;
-                },
-                onTest:()=> num >= 10
+                }
             });
 
 
             //点击更新
             btn.onclick = function(){
                 update({
-                    containerElement:$(".container_2"),
                     total:210,
                     pageNum:1,
                     pageSize:10,
-                    skipPageNum:1,
-                    showListPages:7
+                    skipPageNum:5,
+                    showListPages:7,
+                    mode: 'text'
                 });
             }
          

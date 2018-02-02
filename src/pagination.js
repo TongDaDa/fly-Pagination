@@ -10,25 +10,28 @@
             function foo(){};
     
             //配置参数
-            this._containerElement = $(".pagination"), //页码容器
+            this._containerElement = document.querySelector('.pagination'); //页码容器
             this._pageSize = 10; //一页展示多少
             this._pageNum = 1;  //当前页数(默认为1)
             this._total = 0; //总条数
             this._showListPages = 5; //列表中最少展示几个数字标签页码.
             this._skipPageNum = 5; //快速翻页时，每次翻多少.
+            this._mode = 'ends'; //模式，使用文字上一页下一页或者按钮
 
             this._onChange = foo;
             this._onTest = foo;  //改变页数时用于外部验证.
 
             const __CONFIG_OPTIONS__ = ["containerElement","pageSize","pageNum",
-            "total","showListPages","onChange","onTest","skipPageNum"];
+            "total","showListPages","onChange","onTest","skipPageNum","mode"];
 
             //绑定类型验证
             this.bindOptionTypes(__CONFIG_OPTIONS__);
 
             //生成容器
-            this.ul_list = $(document.createElement("UL")).addClass("fly-pagination-list");
-            this.div_container = $(document.createElement("DIV")).addClass("fly-pagination-wrap").append(this.ul_list);
+            this.ul_list = addClass(document.createElement('UL'),'fly-pagination-list');
+            this.div_container = addClass(document.createElement('DIV'),"fly-pagination-wrap");
+            this.div_container.appendChild(this.ul_list)
+            this.__pagesNum = Math.ceil(this._total / this._pageSize); //根据total应显示多少页数.
 
             // 更新选项
             this.updateOption(options);
@@ -54,15 +57,10 @@
 
             //返回外部接口
             return (options)=>{
-
                 this.updateOption(options);
-
                 const [left,right] = this.calcFlanksPageNumbers();
-                
                 this.updateViewPageList(left,right);
-
             };
-    
         };
     
         /**
@@ -118,6 +116,9 @@
                 },
                 showListPages(value){
                     _this["_showListPages"] = value;
+                },
+                mode(value){
+                    _this['_mode'] = value;
                 }
             };
     
@@ -132,31 +133,44 @@
          * 初始化固定标签 上一页，下一页，输入框.
          */
         Pagination.prototype.initTagElement = function(){
-    
-            const skipPageNum = this._skipPageNum; //每次点击省略号跳10页
+            const skipPageNum = this._skipPageNum;
+            const pagesNum = Math.ceil(this._total / this._pageSize);
+            const topElement = this.initElement(this.makeLiElement(this._mode === 'text' ? "上一页" : 1),'number');
+            const nextElement = this.initElement(this.makeLiElement(this._mode === 'text' ? "下一页" : pagesNum),'number');
+            const superTopElement = this.initElement(this.makeLiElement(''),"fly-super-up");
+            const superNextElement = this.initElement(this.makeLiElement(''),"fly-super-down");
 
-            const topElement = $(this.initElement(d.createElement("LI"),"top"));
-            const nextElement = $(this.initElement(d.createElement("LI"),"next"));
-            const superTopElement = $(this.initElement(d.createElement("LI"),"fly-super-up"));
-            const superNextElement = $(this.initElement(d.createElement("LI"),"fly-super-down"));
-    
-            topElement.html("上一页").attr("title","上一页");
-            nextElement.html("下一页").attr("ttile","下一页");
-    
-            topElement.click(()=>{
-                    this.updatePageNum(this._pageNum-1);
+            topElement.__TYPE__ = 'topElement';
+            nextElement.__TYPE__ = 'nextElement';
+            superTopElement.__TYPE__ = 'superTopElement';
+            superNextElement.__TYPE__ = 'superNextElement';
+
+            if (this._mode === 'ends') {
+                topElement.KEY = 1;
+                nextElement.KEY = Math.ceil(this._total / this._pageSize);
+            }
+
+            topElement.addEventListener('click',()=>{
+                if (this._mode === 'ends') {
+                    this.updatePageNum(1);
+                    return;
+                }
+                this.updatePageNum(this._pageNum-1);
             });
     
-            nextElement.click(()=>{
-                    this.updatePageNum(this._pageNum+1);
+            nextElement.addEventListener('click',()=>{
+                if (this._mode === 'ends') {
+                    this.updatePageNum(pagesNum);
+                }
+                this.updatePageNum(this._pageNum+1);
             });
-    
-            superTopElement.click(()=>{
-                    this.updatePageNum(this._pageNum-skipPageNum);
+
+            superTopElement.addEventListener('click',()=>{
+                this.updatePageNum(this._pageNum-skipPageNum);
             });
-    
-            superNextElement.click(()=>{
-                    this.updatePageNum(this._pageNum+skipPageNum);
+
+            superNextElement.addEventListener('click',()=>{
+                this.updatePageNum(this._pageNum+skipPageNum);
             });
     
             return {
@@ -175,9 +189,7 @@
          * @returns {HTML_DOM} 经过初始化之后的 Dom 元素.
          */
         Pagination.prototype.initElement = function(ele,type){
-    
             let CLASSNAMES = ["fly-page-item"];
-    
             if(type === "number"){
                 CLASSNAMES.push("fly-page-number");
             }else if(type === "top"){
@@ -187,15 +199,12 @@
             }else{
                 CLASSNAMES.push(type);
             }
-    
-            ele.className = CLASSNAMES.join(" ").trim();
-    
+            ele.className = ele.className + CLASSNAMES.join(" ").trim();
             return ele;
         };
     
         /**
          * 用于更新pageNum 即展示的页数(过程性方法).
-         * 
          * @param pageNum {Number} 需要更新到的页数.
          * @return {undefined}
          */
@@ -206,7 +215,7 @@
                 leftBoundary,
                 rightBoundary;
     
-            const maxPagesNumer = Math.ceil(this._total / this._pageSize);;
+            const maxPagesNumber = Math.ceil(this._total / this._pageSize);
     
             if(this._onTest){ test = !(this._onTest(pageNum,this._pageSize) === false); };
     
@@ -222,16 +231,29 @@
     
             if(pageNum<1){ pageNum = 1; };
     
-            if(pageNum > maxPagesNumer){ pageNum = maxPagesNumer; };
+            if(pageNum > maxPagesNumber){ pageNum = maxPagesNumber; };
     
             this._pageNum = pageNum;
     
             this._onChange(this._pageNum,this._pageSize);
 
             [leftBoundary,rightBoundary] = this.calcFlanksPageNumbers();
-    
-            this.updateViewPageList(leftBoundary,rightBoundary);
-    
+
+            const isHideTopPage = this._pageNum < this._skipPageNum;
+            const isHideNextPage = this._pageNum > maxPagesNumber - 3;
+
+            this.updateViewPageList(leftBoundary,rightBoundary,(item)=>{
+                if (this._mode === 'ends') {
+                    if (
+                        item.__TYPE__ === 'superTopElement' && isHideTopPage ||
+                        item.__TYPE__ === 'superNextElement' && isHideNextPage
+                    ) {
+                        return false
+                    }
+                }
+                return true;
+            });
+
         };
     
         /**
@@ -243,47 +265,31 @@
         Pagination.prototype.calcFlanksPageNumbers = function(){
     
             const showListPages = this._showListPages; //页码list列表可以展示几个页码标签.
-
             const showListAveragePages = Math.ceil((showListPages-1) / 2);  //奇数情况，两边分别为偶数
-
-            const maxPages = Math.ceil(this._total / this._pageSize);; //根据total应显示多少页数.
-    
+            const maxPages = Math.ceil(this._total / this._pageSize); //根据total应显示多少页数.
             const pageNum = this._pageNum;
-    
-            let left = 1 ,right = showListPages; //默认值为从第一个，到showListPages长度(除自己)
 
+            let left = 1 ,right = showListPages; //默认值为从第一个，到showListPages长度(除自己)
             let t = true;
     
             if(pageNum - showListAveragePages <= 0){
-
                t= false;
-
             }else if((pageNum + showListAveragePages) > maxPages){
-
                 left = Math.max(maxPages - showListPages+1,1); right = maxPages;
-
                 t = false;
-
-            };
+            }
     
             if(t){
-    
-                    right = pageNum + showListAveragePages;
-
-                    left = pageNum - showListAveragePages;
-    
-            };
+                right = pageNum + showListAveragePages;
+                left = pageNum - showListAveragePages;
+            }
 
            
             //只有在偶数的情况下才会出现大于 ， viewPagesList 显示,重新计算
             if((right - (left-1)) > showListPages){
-
                 const avergae = showListPages / 2;
-
-                left = Math.max((pageNum - avergae ),1); 
-
+                left = Math.max((pageNum - avergae ),1);
                 right = pageNum + avergae-1;
-
             }
 
             //右侧值大于真实页数时,取最小
@@ -298,7 +304,7 @@
          *  @param end {Number} 到哪个页码结束.
          *  @return {undefined}
          */
-        Pagination.prototype.updateViewPageList = function(start = 1,end){
+        Pagination.prototype.updateViewPageList = function(start = 1,end,isAdd){
  
             end = end || this._showListPages;
 
@@ -308,29 +314,31 @@
                   ul = this.ul_list,
                   container = this.div_container;
 
-            const bpdyPagesNumbers = this.createBodyNumberPages(start,end);
+            const bodyPagesNumbers = this.createBodyNumberPages(start,end);
     
             const {topElement,nextElement,superTopElement,superNextElement} = this.initTagElement();
-    
-            ul.empty();
-    
-            ul.append(topElement);
-            ul.append(superTopElement);
-    
-            bpdyPagesNumbers.forEach((ele,k)=>{
-                if(ele[0].KEY === this._pageNum){
-                    ele.addClass("active");
-                };
-                ul.append(ele);
-            });
-    
-            ul.append(superNextElement);
-            ul.append(nextElement);
-    
-            pageContainer.append(container.append(ul));
 
+            while ( ul.firstChild ) {
+                ul.removeChild( ul.firstChild );
+            }
+
+            const queueEle = [topElement,superTopElement,...bodyPagesNumbers,superNextElement,nextElement]
+
+            for (let i=0; i<queueEle.length; i++){
+                const item = queueEle[i]
+                if (isAdd && isAdd(item) || isAdd == null) {
+                    if (item.KEY && item.KEY === this._pageNum) {
+                        addClass(item,"active");
+                    }
+                    domFragment.appendChild(item)
+                }
+            }
+
+            ul.appendChild(domFragment)
+            container.appendChild(ul)
+            pageContainer.appendChild(container)
         };
-    
+
         /**
          * 用于渲染中间数字性页码.
          * 
@@ -341,12 +349,22 @@
         Pagination.prototype.createBodyNumberPages = function(start,needTotal){
     
             let HTMLDom = [];
-    
+
+            if (this._mode === 'ends') {
+                if (needTotal+1 <= Math.ceil(this._total / this._pageSize)){
+                    needTotal+=1
+                } else {
+
+                }
+            }
+
             for(let i = start; i<=needTotal; i++){
-    
-                let ele = document.createElement("LI");
-    
-                ele = this.initElement(ele,"number");
+
+                if (this._mode === 'ends' && (i === 1 || i === needTotal)) continue;
+
+                let ele = this.makeLiElement(i)
+
+                this.initElement(ele,"number");
     
                 ele.KEY = i;
 
@@ -356,16 +374,66 @@
                     enumerable:false
                 });
 
-                ele.innerText = i;
-    
-                ele.onclick = ()=>{ this.updatePageNum(i); };
+                ele.addEventListener('click',()=>{
+                    this.updatePageNum(i);
+                })
 
-                HTMLDom.push($(ele));
+                HTMLDom.push(ele);
     
             };
     
             return HTMLDom;
     
         };
-    
-    })(window,document);
+
+        /**
+         * 创建 <li> <a><a/> </li>
+         * @return Element
+         */
+        Pagination.prototype.makeLiElement = function (innerHTML) {
+            const li = d.createElement('LI');
+            const a = d.createElement('A');
+            a.innerHTML = innerHTML;
+            li.setAttribute('title',innerHTML)
+            li.appendChild(a);
+            return li;
+        }
+
+        //classlist
+        function classList(element) {
+            return element && (" " + element.className + " ");
+        }
+
+        //hasClass
+        function hasClass(element, cls) {
+
+            var className = classList(element);
+
+            return className.indexOf(cls) >= 0;
+
+        }
+
+        //add class
+        function addClass(element, cls) {
+            var oldList = classList(element),
+                newList = oldList + cls;
+            if (hasClass(element, cls)) return;
+            element.className = newList.trim();
+            return element;
+        }
+
+        //remove class
+        function removeClass(element, cls) {
+
+            var comCls = typeof element === "string" ? element : classList(element),
+                newList;
+
+            if (!hasClass(element, cls)) return;
+
+            newList = comCls.replace(" " + cls + " ", " ");
+
+            element.className = newList.trim();
+
+        }
+
+})(window,document);

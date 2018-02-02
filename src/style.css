@@ -13,15 +13,19 @@
     -ms-user-select: none;
     -moz-user-select: none;
 }
-
+.fly-page-number > a{
+    margin: 0 3px;
+}
 .fly-page-item.fly-page-number{
-    width: 25px;
+    min-width: 20px;
     height: 25px;
     line-height: 25px;
     border-radius: 4px;
     background: #fff;
     border: 1px solid #ddd;
 }
+
+
 
 .fly-page-item.fly-super-down::after,
 .fly-page-item.fly-super-up::after {
