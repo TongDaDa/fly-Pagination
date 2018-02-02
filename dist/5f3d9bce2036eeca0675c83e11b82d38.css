@@ -1,0 +1,64 @@
+.fly-pagination-wrap{
+    margin:10px 0;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+
+.fly-pagination-list{
+    list-style-type:none;
+    padding:0 0;
+    margin:0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+}
+.fly-page-number > a{
+    margin: 0 3px;
+}
+.fly-page-item.fly-page-number{
+    min-width: 20px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.fly-page-item.fly-super-down::after,
+.fly-page-item.fly-super-up::after {
+    content: "···";
+    display: block;
+    color: rgba(0,0,0,.35);
+    letter-spacing: 3px;
+    transition:.15s linear;
+}
+
+.fly-page-item.fly-super-up:hover::after{   content:"<<"; color:#568dbd; }
+.fly-page-item.fly-super-down:hover::after{   content:">>"; color:#568dbd; }
+
+.fly-pagination-list .fly-page-item{
+    display: inline-block;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    min-width:25px;
+    margin-right:10px;
+    cursor: pointer;
+    color: #696969;
+    transition:all .15s linear;
+}
+
+.fly-pagination-list .fly-page-item:hover{
+    border-color:#568dbd
+}
+
+.fly-page-item.active{
+    border-color: #568dbd;
+    color: #Fff;
+    background: #568dbd;
+}
+
+.fly-page-item.clicked::after{
+    content:" ";
+}

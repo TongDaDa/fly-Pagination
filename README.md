@@ -1,33 +1,18 @@
 ## fly-Pagination
-🚀🚀🚀 fly-Pagination是一个依赖于jquery的分页器插件，`后续`会支持通用样式定制，可扩展，及简化的插件风格.
-
-[![NPM version][npm-badge]][npm-url]
-[![Build Status][travis-badge]][travis-url]
-[![Coverage Status][coveralls-badge]][coveralls-url]
-[![Gittip][gittip-image]][gittip-url]
-[![NPM downloads][npm-downloads]][npm-url]
-
-[npm-badge]: https://img.shields.io/npm/v/pinyin.svg?style=flat
-[npm-url]: https://www.npmjs.com/package/pinyin
-[npm-downloads]: http://img.shields.io/npm/dm/pinyin.svg?style=flat
-[travis-badge]: https://travis-ci.org/hotoo/pinyin.svg?branch=master
-[travis-url]: https://travis-ci.org/hotoo/pinyin
-[coveralls-badge]: https://coveralls.io/repos/hotoo/pinyin/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/r/hotoo/pinyin
-[gittip-image]: https://img.shields.io/gittip/hotoo.svg?style=flat-square
-[gittip-url]: https://www.gittip.com/hotoo/
+🚀🚀🚀 fly-Pagination是一款分页器插件，`后续`会支持通用样式定制，可扩展，及简化的插件风格.
 
 ## feature
 正如其名，"轻",可扩展性高,定制样式配置(后期会支持配置主题色)，内置参数类型验证。
 
 ## download
 
-1.目前jquery版不支持npm下载,如果您使用 vue 或 react,可以通过npm下载此`组件`,使用npma安装到您的项目下.
+1. 如果您使用 vue 或 react,可以通过npm下载此`组件`,使用npma安装到您的项目下.
 
 ```
 npm install --save fly-vue-pagination
 npm install --save fly-react-pagination
 ```
+
 jquery版，请点击此处下载.
 [![NPM downloads][npm-downloads]][npm-url].
 
@@ -37,8 +22,6 @@ jquery版，请点击此处下载.
 下面,让我们开始使用漂亮的分页器吧！😄
 
 ##use
-
-**此插件依赖于juqery,如果项目没有使用jQuery,使用前请先加载jQuery.**
 
 使用 `new Fly_Pagination`进行初始化并填入你想要使用的Options，通常这是第一次页面渲染进行的。
 
@@ -71,43 +54,15 @@ update({
 
 ## options
 
-containerElement
-说明:页码容器，默认插入到
-参数:{String | HTMLElement}
-默认值:
+<br /><br /><br />
 
-pageSize
-说明:每页展示多少条
-参数:{Numbe}
-默认值:10
-
-pageNum
-说明:当前的页数
-参数:{Number}
-默认值:1
-
-total
-说明:总条数
-参数:{Number}
-默认值:0
-
-showListPages
-说明:显示的页码块
-参数:{Number}
-默认值:5
-
-skipPageNum
-说明: 快速翻页每次的页数.
-参数: {Number}
-默认值: 5
-
-
-onChange
-说明: 页码发生变化时的触发函数，
-参数 : {Function} (pageSize,pageNum)
-默认值: 无
-
-onTest
-说明: 页码发生变化前的钩子函数.
-参数: {Function}(pageNum,pageSize)
-默认值: 无
+| 参数      | 说明                                      | 类型         | 默认值 |
+|----------|------------------------------------------|-------------|-------|
+| containerElement | 页码容器，默认插入到 | Object(HTMLDom) | class(.pagination) |
+| pageSize | 每页展示多少条 | Number | 10 |
+| pageNum |  当前的页数 | Number | 1 |
+| total | 总条数 | Number | 0 |
+| showListPages | 显示的页码块 | Number | 5 |
+| skipPageNum |  快速翻页每次的页数 | Number | 5 |
+| onChange |  页码发生变化时的触发函数 | Function | - |
+| onTest |  页码发生变化前的钩子函数 | Function | -|
