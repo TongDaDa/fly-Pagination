@@ -6,7 +6,7 @@
 内置参数类型验证，保证了健壮性。
 
 ## download
-[![down](https://codecov.io/gh/achilleasa/gopher-os/branch/master/graph/badge.svg)](http://39.107.66.37:8090/assets/pagination.1.0.0.min.js)
+<a href="http://39.107.66.37:8090/assets/pagination.1.0.0.min.js" download> 点击下载 </a>
 下面,让我们开始使用漂亮的分页器吧！😄
 
 ##use
